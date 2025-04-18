@@ -11,7 +11,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init-scripts:/docker-entrypoint-initdb.d
 
   redis:
     image: redis:7
@@ -92,6 +91,7 @@ services:
       - postgres
       - redis
       - kafka
+    command: ["./wait-for-kafka.sh", "kafka", "29092", "node", "dist/main"]
     ports:
       - "3001:3001"
     environment:
@@ -107,6 +107,7 @@ services:
       - postgres
       - redis
       - kafka
+    command: ["./wait-for-kafka.sh", "kafka", "29092", "node", "dist/main"]
     ports:
       - "3002:3002"
     environment:
@@ -121,6 +122,7 @@ services:
     depends_on:
       - postgres
       - kafka
+    command: ["./wait-for-kafka.sh", "kafka", "29092", "node", "dist/main"]
     ports:
       - "3003:3003"
     environment:
